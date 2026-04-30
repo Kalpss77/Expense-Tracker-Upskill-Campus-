@@ -1,0 +1,139 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Expense {
+    String date;
+    double amount;
+    String category;
+    String description;
+
+    Expense(String date, double amount, String category, String description) {
+        this.date = date;
+        this.amount = amount;
+        this.category = category;
+        this.description = description;
+    }
+
+    void display() {
+        System.out.println("Date: " + date);
+        System.out.println("Amount: " + amount);
+        System.out.println("Category: " + category);
+        System.out.println("Description: " + description);
+        System.out.println("------------------------");
+    }
+}
+
+public class Main {
+    static ArrayList<Expense> expenses = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    public static void addExpense() {
+        System.out.print("Enter Date: ");
+        String date = sc.nextLine();
+
+        System.out.print("Enter Amount: ");
+        double amount = sc.nextDouble();
+        sc.nextLine();
+
+        System.out.print("Enter Category: ");
+        String category = sc.nextLine();
+
+        System.out.print("Enter Description: ");
+        String description = sc.nextLine();
+
+        expenses.add(new Expense(date, amount, category, description));
+        System.out.println("Expense added successfully.");
+    }
+
+    public static void viewExpenses() {
+        if (expenses.isEmpty()) {
+            System.out.println("No expenses found.");
+            return;
+        }
+
+        for (Expense e : expenses) {
+            e.display();
+        }
+    }
+
+    public static void searchCategory() {
+        System.out.print("Enter Category: ");
+        String category = sc.nextLine();
+
+        boolean found = false;
+        for (Expense e : expenses) {
+            if (e.category.equalsIgnoreCase(category)) {
+                e.display();
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No expenses found in this category.");
+        }
+    }
+
+    public static void totalExpense() {
+        double total = 0;
+        for (Expense e : expenses) {
+            total += e.amount;
+        }
+
+        System.out.println("Total Expense: " + total);
+    }
+
+    public static void deleteExpense() {
+        viewExpenses();
+        if (expenses.isEmpty()) return;
+
+        System.out.print("Enter expense number to delete: ");
+        int index = sc.nextInt();
+        sc.nextLine();
+
+        if (index > 0 && index <= expenses.size()) {
+            expenses.remove(index - 1);
+            System.out.println("Expense deleted successfully.");
+        } else {
+            System.out.println("Invalid number.");
+        }
+    }
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("\n===== Expense Tracker =====");
+            System.out.println("1. Add Expense");
+            System.out.println("2. View Expenses");
+            System.out.println("3. Search by Category");
+            System.out.println("4. Total Expense");
+            System.out.println("5. Delete Expense");
+            System.out.println("6. Exit");
+            System.out.print("Enter choice: ");
+
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    addExpense();
+                    break;
+                case 2:
+                    viewExpenses();
+                    break;
+                case 3:
+                    searchCategory();
+                    break;
+                case 4:
+                    totalExpense();
+                    break;
+                case 5:
+                    deleteExpense();
+                    break;
+                case 6:
+                    System.out.println("Thank you.");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
